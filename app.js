@@ -1,7 +1,6 @@
 const player1 = 'X';
 const player2 = 'O';
 
-let currentTurn = 1;
 let movesMade = 0;
 
 const winnerContainer = $('.winner');
@@ -11,18 +10,21 @@ const sqr = $('.square');
 
 sqr.on('click', (e) => {
     movesMade++;
-    if (currentTurn % 2 === 1) {
+    if (movesMade % 2 === 1) {
         event.target.innerHTML = player1;
         event.target.style.color = "red";
-        currentTurn++;
     } else {
         event.target.innerHTML = player2;
         event.target.style.color = "green";
-        currentTurn--;
     }
 
     if (checkForWinner()) {
-        theWinner = currentTurn == 1 ? player2 : player1;
+        if(movesMade%2 ===1){
+        	theWinner = player1
+        }
+        else{
+        	theWinner = player2
+        }
         declareWinner(theWinner);
     } else if (!checkForWinner() && movesMade ==9){
 		winnerContainer.css('display', "block");
@@ -44,7 +46,6 @@ function checkForWinner() {
         
         const moves = Array.prototype.slice.call($(".square"));
         const results = moves.map(square => square.innerHTML);
-        //console.log(results)
         const winningCombos = [
             [0, 1, 2],
             [3, 4, 5],
@@ -57,9 +58,6 @@ function checkForWinner() {
         ];
         return winningCombos.find(combo => {
         	if (results[combo[0]] !== "" && results[combo[1]] !== "" && results[combo[2]] !== "" && results[combo[0]] === results[combo[1]] && results[combo[1]] === results[combo[2]]) {
-                //console.log(combo[0])
-                //console.log("---"+combo[1])
-                //console.log("+++"+combo[2])
                 return true;
             } else {
                 return false;
